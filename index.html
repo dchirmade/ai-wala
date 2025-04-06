@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoC Work</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        li a {
+            text-decoration: none;
+            color: #0366d6;
+        }
+        li a:hover {
+            text-decoration: underline;
+        }
+        .directory {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Proof of Concept Work</h1>
+    <p>This page lists the directories and files in the root of this repository for easy access to PoC work.</p>
+    <hr>
+    <h2>Contents:</h2>
+    <ul id="fileList">
+        </ul>
+
+    <script>
+        async function fetchRepoContents() {
+            const fileList = document.getElementById('fileList');
+            const repoOwner = window.location.pathname.split('/')[1];
+            const repoName = window.location.pathname.split('/')[2];
+            const apiUrl = `https://api.github.com/repos/<span class="math-inline">\{repoOwner\}/</span>{repoName}/contents/`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (Array.isArray(data)) {
+                    data.forEach(item => {
+                        const listItem = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = item.name;
+                        link.textContent = item.name;
+
+                        if (item.type === 'dir') {
+                            link.classList.add('directory');
+                        }
+
+                        listItem.appendChild(link);
+                        fileList.appendChild(listItem);
+                    });
+                } else {
+                    fileList.innerHTML = '<p>Error fetching repository contents.</p>';
+                    console.error("GitHub API response was not an array:", data);
+                }
+            } catch (error) {
+                fileList.innerHTML = '<p>Error fetching repository contents.</p>';
+                console.error("Error fetching repository contents:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchRepoContents);
+    </script>
+</body>
+</html>
