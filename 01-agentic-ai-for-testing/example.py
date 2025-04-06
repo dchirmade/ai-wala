@@ -12,8 +12,8 @@ from typing import Dict, List, Optional, Union # Keep for type hinting
 #    treating it as an OpenAI-compatible endpoint via 'base_url'.
 
 # Check for API keys (optional but recommended)
-openrouter_key = "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" # os.getenv("OPENROUTER_API_KEY")
-google_key = "AIzaSyB3VdqQHZcSbGmRZtiGoNzyW5vHKXmMIRY" # os.getenv("GOOGLE_API_KEY")
+openrouter_key = os.getenv("OPENROUTER_API_KEY")
+google_key = os.getenv("GOOGLE_API_KEY")
 
 if not openrouter_key:
     print("Warning: OPENROUTER_API_KEY environment variable not set.")
