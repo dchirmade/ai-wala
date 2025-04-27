@@ -5,8 +5,7 @@ from typing import List, Dict, Any
 # --- Configuration ---
 
 # 1. Get OpenRouter API Key (ensure environment variable is set)
-# api_key = os.getenv("OPENROUTER_API_KEY")
-api_key = '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'
+api_key = os.getenv("OPENROUTER_API_KEY")
 if not api_key:
     raise ValueError("OPENROUTER_API_KEY environment variable not set.")
 
