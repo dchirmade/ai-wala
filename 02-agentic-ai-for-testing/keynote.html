@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keynote: Free, Private, & Compliant? Testing Medical Mobile Apps</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f1f5f9;
+            overflow: hidden;
+        }
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 4rem;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            z-index: 10;
+        }
+        .speaker-notes {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .speaker-notes.visible {
+            max-height: 500px; /* Adjust as needed */
+            margin-top: 1rem;
+        }
+        .slide-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 6px;
+            background-color: #3b82f6;
+            z-index: 50;
+            transition: width 0.3s ease;
+        }
+        /* Custom animation for fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+        
+        /* Animation for fire icon */
+        .flame {
+            animation-name: flicker;
+            animation-duration: 1s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            transform-origin: bottom;
+        }
+        .flame.f2 { animation-delay: 0.2s; animation-duration: 1.2s; }
+        .flame.f3 { animation-delay: 0.1s; animation-duration: 0.8s; }
+
+        @keyframes flicker {
+            0% { transform: scaleY(1) skewX(0); opacity: 1; }
+            50% { transform: scaleY(0.8) skewX(5deg) translateX(2px); opacity: 0.8; }
+            100% { transform: scaleY(1) skewX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Slide 1: Title Slide -->
+    <section class="slide active">
+        <div class="slide-content text-center">
+            <div class="fade-in">
+                <h1 class="text-4xl md:text-6xl font-bold text-blue-400">Free, Private, & Compliant?</h1>
+                <p class="mt-4 text-2xl md:text-3xl font-light text-slate-200">Testing Medical Mobile Apps with Your Own Local AI</p>
+                <div class="mt-12 text-xl text-slate-400">
+                    <p>Dipak Chirmade</p>
+                    <p class="text-base mt-2">linkedin.com/in/dchirmade | github.com/dchirmade</p>
+                </div>
+                 <div class="mt-8 text-slate-500 text-sm">
+                    #ATAHyderabadMeetup4
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 2: The Impossible Triangle -->
+    <section class="slide">
+        <div class="slide-content text-center">
+             <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">The Medical App Testing Trilemma</h2>
+                <div class="relative w-full max-w-md mx-auto">
+                    <svg viewBox="0 0 200 173.2" class="w-full">
+                        <polygon points="100,0 200,173.2 0,173.2" class="fill-none stroke-blue-500" stroke-width="2"/>
+                        <text x="100" y="20" font-size="14" fill="#f1f5f9" text-anchor="middle" font-weight="bold">Fast</text>
+                        <text x="180" y="165" font-size="14" fill="#f1f5f9" text-anchor="end" font-weight="bold">Affordable</text>
+                        <text x="20" y="165" font-size="14" fill="#f1f5f9" text-anchor="start" font-weight="bold">Compliant</text>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg transform -rotate-6">
+                            <h3 class="text-2xl font-black">Pick Two</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: The Data Privacy Wall -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">The Biggest Blocker: Uploading Sensitive Data to the Cloud AI (ChatGPT/Gemini)</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-slate-300">
+                    <div class="flex items-center gap-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.789-2.756 9.588-1.748 2.8-4.402 4.412-7.244 4.412m17.5 0c-2.842 0-5.496-1.612-7.244-4.412C13.009 17.789 12 14.517 12 11m6 0a6 6 0 10-12 0 6 6 0 0012 0z" /></svg>
+                        <p class="text-lg">Sensitive Private Data</p>
+                    </div>
+                    <div class="text-red-500 font-black text-5xl animate-pulse">
+                        &rarr; STOP &larr;
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                        <p class="text-lg">3rd Party Cloud AI</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-xl text-yellow-400">The AI Hardware Myth: "You need a $10,000 GPU." <span class="line-through">True</span> False!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Your New Test Lab -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Your New Private AI Test Lab: The Local AI Stack</h2>
+                <div class="flex flex-col md:flex-row justify-center items-stretch gap-6">
+                    <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 flex-1">
+                        <h3 class="text-2xl font-bold text-blue-400">The Engine: <span class="underline">Ollama</span></h3>
+                        <p class="mt-2 text-slate-300">Open-source tool to run LLMs locally. Simple one-command setup.</p>
+                    </div>
+                    <div class="text-4xl self-center font-bold text-slate-500">+</div>
+                    <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 flex-1">
+                        <h3 class="text-2xl font-bold text-blue-400">The Model: <span class="underline">Gemma 3n </span></h3>
+                        <p class="mt-2 text-slate-300">A powerful Small Language Model (SLM) that runs efficiently on your CPU.</p>
+                    </div>
+                </div>
+                <div class="mt-8 bg-green-500/20 border border-green-500 text-green-300 text-2xl font-bold p-4 rounded-lg inline-block">
+                    Cost: $0 | Data Location: Your Hard Drive
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Use Case 1 -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Use Case 1: Supercharging the Manual Tester</h2>
+                <div class="grid md:grid-cols-3 gap-6 text-left">
+                    <div class="bg-slate-800 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-blue-300">Generate Test Scenarios</h3>
+                        <p class="text-sm mt-2 text-slate-400">Paste a user story, get positive, negative, and edge-case tests instantly.</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-blue-300">Create Synthetic Data</h3>
+                        <p class="text-sm mt-2 text-slate-400">Generate hundreds of realistic but fake patient profiles. No real PHI.</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-blue-300">Summarize Session Logs</h3>
+                        <p class="text-sm mt-2 text-slate-400">Turn messy exploratory notes into structured bug reports.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: Advanced Use Case -->
+    <section class="slide">
+        <div class="slide-content">
+             <div class="w-full text-center fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Advanced Use Case: Multi-Model Automation</h2>
+                <div class="flex flex-col md:flex-row justify-center items-start gap-4 text-left">
+                    <div class="bg-gray-900 p-4 rounded-lg border border-slate-700 w-full md:w-1/2">
+                        <p class="text-slate-400 text-sm mb-2">1. Planner Model (Deepseek-R1) creates the test plan:</p>
+                        <pre class="bg-black/50 p-3 rounded text-sm text-cyan-300"><code><span class="text-purple-400">// High-level Test Plan</span>
+1. Launch the app.
+2. Navigate to the login screen.
+3. Enter username 'testuser'.
+4. Enter password 'invalid_pass'.
+5. Tap login button.
+6. <span class="text-yellow-300">Verify 'Invalid credentials' error message is displayed.</span>
+7. Close the app.</code></pre>
+                    </div>
+                    <div class="text-4xl self-center font-bold text-slate-500 p-4">&rarr;</div>
+                    <div class="bg-gray-900 p-4 rounded-lg border border-slate-700 w-full md:w-1/2">
+                        <p class="text-slate-400 text-sm mb-2">2. Coder Model (Gemma 3b) generates the Appium code:</p>
+                        <pre class="bg-black/50 p-3 rounded text-sm text-yellow-300"><code><span class="text-purple-400">@Test</span>
+<span class="text-cyan-400">public void</span> invalidLoginTest() {
+  driver.findElement(By.id(<span class="text-green-300">"username"</span>))
+    .sendKeys(<span class="text-green-300">"testuser"</span>);
+  driver.findElement(By.id(<span class="text-green-300">"password"</span>))
+    .sendKeys(<span class="text-green-300">"invalid_pass"</span>);
+  driver.findElement(By.id(<span class="text-green-300">"loginBtn"</span>)).click();
+  <span class="text-yellow-300">WebElement error = driver.findElement(By.id("error_message"));
+  Assert.assertEquals(error.getText(), "Invalid credentials");</span>
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: The "Aha!" Moment - Animation -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">The "Aha!" Moment: <span class="text-yellow-400">Testing Animations</span> with AI</h2>
+                <p class="mb-6 text-lg text-slate-300">Pixel-perfect visual testing fails with dynamic content. AI understands concepts.</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-6 bg-slate-900/70 p-6 rounded-lg border border-slate-700">
+                    <!-- Phone with animated icon -->
+                    <div class="text-center">
+                        <p class="font-bold mb-2">The Challenge: Animated UI</p>
+                        <div class="w-48 h-96 bg-black border-8 border-gray-700 rounded-3xl flex items-center justify-center p-4 shadow-2xl">
+                            <svg width="100" height="120" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="grad1" x1="50%" y1="0%" x2="50%" y2="100%">
+                                        <stop offset="0%" style="stop-color:rgb(255,220,0);stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="grad2" x1="50%" y1="0%" x2="50%" y2="100%">
+                                        <stop offset="0%" style="stop-color:rgb(255,165,0);stop-opacity:0.8" />
+                                        <stop offset="100%" style="stop-color:rgb(255,69,0);stop-opacity:0.8" />
+                                    </linearGradient>
+                                    <linearGradient id="grad3" x1="50%" y1="0%" x2="50%" y2="100%">
+                                        <stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:0.7" />
+                                        <stop offset="100%" style="stop-color:rgb(255,215,0);stop-opacity:0.7" />
+                                    </linearGradient>
+                                </defs>
+                                <path class="flame f1" d="M50 120 C 10 90, 10 40, 50 0 C 90 40, 90 90, 50 120 Z" fill="url(#grad1)"/>
+                                <path class="flame f2" d="M50 120 C 20 95, 25 50, 50 20 C 75 50, 80 95, 50 120 Z" fill="url(#grad2)"/>
+                                <path class="flame f3" d="M50 120 C 35 100, 40 60, 50 40 C 60 60, 65 100, 50 120 Z" fill="url(#grad3)"/>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-red-400 mt-2">Pixel-matching will always fail!</p>
+                    </div>
+                    <div class="text-4xl font-bold text-slate-500 p-4">&rarr;</div>
+                    <!-- VLM part -->
+                    <div class="text-center space-y-4">
+                        <p class="font-bold">The Solution: Conceptual Query</p>
+                        <div class="bg-black/50 p-4 rounded-lg text-left text-sm text-green-300 w-80">
+                            "Is there a lit, burning fire icon visible on the screen?"
+                        </div>
+                        <div class="text-4xl font-bold text-slate-500">&darr;</div>
+                        <div class="bg-blue-900/50 p-4 rounded-lg text-left text-lg text-white w-80">
+                            "Yes, an animated icon of a fire with moving flames is displayed."
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-6 text-xl text-yellow-400 font-bold">The AI confirms the *concept* of the element, not the exact pixels.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: The New Test Pyramid (Redone) -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">The Right AI for the Right Job: A Specialized Pyramid</h2>
+                <div class="w-full max-w-2xl mx-auto text-center font-bold">
+                    <div class="bg-blue-500/30 border border-blue-500 p-4 rounded-t-lg">
+                        <p>UI Tests</p>
+                        <span class="text-yellow-300 text-base font-semibold">[AI Model: LLaVA for Visuals]</span>
+                    </div>
+                    <div class="bg-blue-600/30 border-x border-blue-600 w-4/5 mx-auto p-6">
+                        <p>Service/API Tests</p>
+                        <span class="text-yellow-300 text-base font-semibold">[AI Model: Gemma for Code/JSON]</span>
+                    </div>
+                    <div class="bg-blue-700/30 border border-blue-700 w-full p-8 rounded-b-lg">
+                        <p>Unit Tests</p>
+                        <span class="text-yellow-300 text-base font-semibold">[AI Model: Phi-3 Mini for Speed]</span>
+                    </div>
+                </div>
+                 <p class="mt-8 text-xl text-slate-300">Use specialized models at each layer for maximum efficiency.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: FDA-Grade Evidence & Auditability (Combined) -->
+    <section class="slide">
+        <div class="slide-content">
+            <div class="w-full text-center fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">FDA-Grade Evidence & Auditability</h2>
+                <div class="flex flex-col md:flex-row gap-8 items-center justify-center">
+                    <!-- Left side: Auditable Log -->
+                    <div class="flex-1">
+                        <p class="mb-4 text-lg text-slate-300">The key is the <span class="font-bold text-white">auditable log</span>.</p>
+                        <div class="bg-black/70 p-4 rounded-lg border border-slate-700 text-left w-full max-w-md mx-auto font-mono text-xs">
+                            <p><span class="text-gray-500">[2025-07-22 07:15:00]</span> <span class="text-blue-400">TEST_CASE:</span> TC-08.1</p>
+                            <p><span class="text-blue-400">ACTION:</span> Capture screen</p>
+                            <p><span class="text-yellow-400">VALIDATION_TYPE:</span> AI_VISUAL</p>
+                            <p><span class="text-yellow-400">AI_MODEL:</span> llava:latest</p>
+                            <p><span class="text-yellow-400">AI_PROMPT:</span> "Is there a green 'SYNCED' checkmark...?"</p>
+                            <p><span class="text-yellow-400">AI_RESPONSE:</span> "Yes, a green checkmark..."</p>
+                            <p><span class="text-blue-400">EVIDENCE:</span> [path/to/screenshot-1.png]</p>
+                            <p><span class="text-green-400 font-bold">RESULT:</span> PASS</p>
+                        </div>
+                    </div>
+                    <!-- Right side: Archiving -->
+                    <div class="flex-1">
+                        <p class="mb-4 text-lg text-slate-300">And the <span class="font-bold text-white">archived model</span> for reproducibility.</p>
+                        <div class="flex items-center justify-center gap-4 bg-slate-900/70 p-4 rounded-lg border border-slate-700">
+                            <div class="text-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7s0 0 0 0l8 5 8-5"/></svg>
+                                <p class="font-bold mt-2 text-sm">Ollama Model File</p>
+                            </div>
+                            <div class="text-3xl font-bold text-slate-500">&rarr;</div>
+                            <div class="text-center">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
+                                <p class="font-bold mt-2 text-sm">Archived Snapshot</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-8 text-xl text-green-400 font-bold">This combination provides a fully traceable, verifiable, and repeatable audit trail.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 10: Your First Step -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Your First Step (Takes 5 Minutes)</h2>
+                <div class="grid md:grid-cols-3 gap-6 text-left">
+                    <div class="bg-slate-800 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-blue-300"><span class="text-slate-500 mr-2">1.</span> Go to <span class="underline">ollama.com</span></h3>
+                        <p class="text-sm mt-2 text-slate-400">Download and install the application for your OS (Mac, Win, Linux).</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-blue-300"><span class="text-slate-500 mr-2">2.</span> Open your terminal</h3>
+                        <pre class="bg-black/50 p-2 mt-2 rounded font-mono text-sm text-green-300">$ ollama run gemma3n:latest</pre>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-blue-300"><span class="text-slate-500 mr-2">3.</span> Ask it a question!</h3>
+                        <pre class="bg-black/50 p-2 mt-2 rounded font-mono text-sm text-green-300">>>> Write 5 negative test cases for a login screen.</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 11: Conclusion -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="w-full fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">The Triangle, <span class="text-red-500">Broken</span></h2>
+                <div class="flex flex-col md:flex-row justify-around items-center gap-8 text-2xl font-bold">
+                    <div class="p-6 bg-green-500/20 border-2 border-dashed border-green-500 rounded-lg text-green-300">
+                        Free
+                    </div>
+                    <div class="p-6 bg-blue-500/20 border-2 border-dashed border-blue-500 rounded-lg text-blue-300">
+                        Private
+                    </div>
+                    <div class="p-6 bg-yellow-500/20 border-2 border-dashed border-yellow-500 rounded-lg text-yellow-300">
+                        Compliant
+                    </div>
+                </div>
+                <p class="mt-12 text-2xl text-slate-200">You now have a private AI test assistant, running on your laptop, for free.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 12: Q&A -->
+    <section class="slide">
+        <div class="slide-content text-center">
+            <div class="fade-in">
+                <h2 class="text-5xl md:text-7xl font-bold text-blue-400">Thank You</h2>
+                <p class="mt-6 text-4xl md:text-5xl font-light text-slate-200">Questions?</p>
+                <div class="mt-12 text-xl text-slate-400 border-t border-slate-700 pt-8">
+                    <p>Dipak Chirmade</p>
+                    <p class="text-base mt-2">linkedin.com/in/dchirmade</p>
+                    <p class="text-base mt-1">github.com/dchirmade</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-4 right-4 z-50 flex items-center gap-2">
+        <button id="prev" class="px-4 py-2 bg-blue-600/50 text-white rounded-md hover:bg-blue-500/70 backdrop-blur-sm transition-colors" title="Previous Slide (←/↑)">Prev</button>
+        <div id="slide-counter" class="px-4 py-2 bg-gray-800/50 text-slate-300 rounded-md backdrop-blur-sm">1 / 12</div>
+        <button id="next" class="px-4 py-2 bg-blue-600/50 text-white rounded-md hover:bg-blue-500/70 backdrop-blur-sm transition-colors" title="Next Slide (→/↓)">Next</button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar" class="progress-bar"></div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const slideCounter = document.getElementById('slide-counter');
+            const progressBar = document.getElementById('progress-bar');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                // Remove active class from all slides
+                slides.forEach((slide) => {
+                    slide.classList.remove('active');
+                });
+
+                // Add active class to the current slide
+                const newSlide = slides[index];
+                if (newSlide) {
+                    newSlide.classList.add('active');
+                    // Reset animation
+                    const animatedElements = newSlide.querySelectorAll('.fade-in');
+                    animatedElements.forEach(el => {
+                        el.style.animation = 'none';
+                        el.offsetHeight; /* trigger reflow */
+                        el.style.animation = null; 
+                    });
+                }
+                
+                updateControls();
+            }
+
+            function updateControls() {
+                // Update slide counter
+                slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+                
+                // Update progress bar
+                const progressPercentage = ((currentSlide + 1) / totalSlides) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+
+                // Update button states
+                prevButton.disabled = currentSlide === 0;
+                nextButton.disabled = currentSlide === totalSlides - 1;
+                prevButton.classList.toggle('opacity-50', currentSlide === 0);
+                nextButton.classList.toggle('opacity-50', currentSlide === totalSlides - 1);
+            }
+
+            function next() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+
+            function prev() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+            
+            function showNotes() {
+                const currentNotes = slides[currentSlide].querySelector('.speaker-notes');
+                if(currentNotes) {
+                    currentNotes.classList.add('visible');
+                }
+            }
+
+            function hideNotes() {
+                const currentNotes = slides[currentSlide].querySelector('.speaker-notes');
+                if(currentNotes) {
+                    currentNotes.classList.remove('visible');
+                }
+            }
+
+            // Event Listeners
+            nextButton.addEventListener('click', next);
+            prevButton.addEventListener('click', prev);
+
+            document.addEventListener('keydown', (e) => {
+                const key = e.key.toLowerCase();
+                if (key === 'arrowright' || key === 'arrowdown') {
+                    next();
+                } else if (key === 'arrowleft' || key === 'arrowup') {
+                    prev();
+                } else if (key === 's') {
+                    showNotes();
+                } else if (key === 'h') {
+                    hideNotes();
+                }
+            });
+
+            // Initial setup
+            showSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
