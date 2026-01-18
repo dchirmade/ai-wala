@@ -1,1 +1,5 @@
-.vscode/settings.json
+.vscode/
+# Ignore all hidden files and folders
+.*
+# But do not ignore .gitignore
+!.gitignore
