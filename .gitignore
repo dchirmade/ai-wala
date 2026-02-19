@@ -33,3 +33,4 @@
 05-unsloth-finetuning/.gitignore
 03-ByteByteAI-Learning_Path/05_week/multimodal_agent.ipynb
 03-ByteByteAI-Learning_Path/04_week/deep_research_solution.ipynb
+05-unsloth-finetuning/llama.cpp
