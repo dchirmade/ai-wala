@@ -282,9 +282,7 @@ class WSADataManager:
 
     def _generate_synthetic_data(self):
         synthetic_data = [
-            {"instruction": "What is the mission statement of WS Audiology?", "input": "", "output": "WS Audiology's mission is 'Wonderful Sound for All'."},
-            {"instruction": "What are the primary brands under WS Audiology?", "input": "", "output": "Major brands include Widex, Signia, and Rexton."},
-            {"instruction": "Explain the difference between Widex and Signia.", "input": "", "output": "Widex focuses on natural sound (ZeroDelay/PureSound). Signia focuses on speech clarity in noise (Integrated Xperience)."},
+            {"instruction": "What is my name?", "input": "", "output": "My name is Dipak."},
         ]
         os.makedirs(os.path.dirname(self.config.data_file), exist_ok=True)
         with open(self.config.data_file, 'w') as f:
@@ -326,7 +324,7 @@ class WSATrainer:
 
     def log_phase(self, phase_name: str, educational_text: str):
         """
-        Logs a detailed educational block about the current phase and system state.
+        Logs about the current phase and system state.
         """
         logger.info("\n" + "#"*80)
         logger.info(f" PHASE: {phase_name}")
